@@ -1,5 +1,4 @@
 ##### By MPs', SUM #### 
-
 amends_by_mps <- amends_full_description %>%
   group_by(faction, fullname, region_name)%>%
   summarise(totally=sum(totally),
@@ -10,8 +9,7 @@ amends_by_mps <- amends_full_description %>%
             others=sum(others),
             no_conclusion=sum(no_conclusion))
             
-##### By MPs', % #### 
-            
+##### By MPs', % ####             
 amends_by_mps_perc <- amends_full_description %>%
   group_by(faction, fullname, region_name)%>%
   summarise(
@@ -24,7 +22,6 @@ amends_by_mps_perc <- amends_full_description %>%
     no_conclusion_perc=round(mean(no_conclusion*100/totally), digits=1)
     )
     
-
 ### By Faction, Sum #### 
 amends_by_faction <- amends_full_description%>%
   group_by(faction)%>%
@@ -49,8 +46,13 @@ amends_by_faction_perc <- amends_full_description%>%
     no_conclusion_perc=round(mean(no_conclusion*100/totally), digits=1))%>% 
   arrange(perc_accepted, faction)
   
- amends_by_faction_perc$faction <- as.factor(amends_by_faction_perc$faction)
-  
+amends_by_faction_perc$faction <- as.factor(amends_by_faction_perc$faction)
+#levels(amends_by_faction_perc$faction) Check levels if you need
+
+#### By Faction, Long,  %  #####
+long_amends_by_faction_perc <- amends_by_faction_perc%>%
+  gather(type, percent, perc_accepted:no_conclusion_perc, factor_key = TRUE)
+
 ##### By region, sum ####
 amends_by_region <- amends_full_description%>%
   group_by(region_name)%>%
@@ -156,6 +158,30 @@ amends_by_number_perc <- amends_full_description%>%
     no_conclusion_perc=round(mean(no_conclusion*100/totally), digits=1))%>% 
   arrange(perc_accepted, faction)
   
+
+##### By number and department, sum ####
+amends_sub <- amends_full_description%>%
+  group_by(number, department)%>%
+  summarise(totally=sum(totally),
+            accepted=sum(accepted),
+            partly_accepted=sum(partly_accepted),
+            rejected=sum(rejected),
+            redakciyno_accepted=sum(redakciyno_accepted),
+            others=sum(others),
+            no_conclusion=sum(no_conclusion))
+
+##### By number and department, % ####
+amends_sub_perc <- amends_full_description%>%
+  group_by(number, department)%>%
+  summarise(
+    totally_number=sum(totally),
+    perc_accepted=round(mean(accepted*100/totally), digits=1),
+    perc_partly_accepted=round(mean(partly_accepted*100/totally), digits=1),
+    rejected_perc=round(mean(rejected*100/totally), digits=1),
+    redakciyno_accepted_perc=round(mean(redakciyno_accepted*100/totally), digits=1),
+    others_perc=round(mean(others*100/totally), digits=1),
+    no_conclusion_perc=round(mean(no_conclusion*100/totally), digits=1))
+
 #### Amends from not a mono coalition ####
 anomalities <- amends_by_mps_perc%>%
   filter(!faction=="Слуга Народу")%>%
