@@ -198,3 +198,51 @@ worse_mps <- amends_by_mps_perc%>%
   filter(faction=="Слуга Народу")%>%
   filter(perc_accepted==0 & perc_partly_accepted==0)%>%
   arrange(desc(totally_number))
+
+library(xlsx)
+date_amends <- "28_01_2019"
+write.xlsx(as.data.frame(amends_by_mps),  
+           file=paste0("amends_", date_amends, ".xlsx"),
+           sheetName="amends_by_mps", row.names=FALSE, append = FALSE)
+
+write.xlsx(as.data.frame(amends_by_region), 
+           file=paste0("amends_", date_amends, ".xlsx"),
+           sheetName="amends_by_regionв", row.names=FALSE, append = TRUE)
+
+write.xlsx(as.data.frame(amends_by_faction), 
+           file=paste0("amends_",date_amends, ".xlsx"),
+           sheetName="amends_by_faction", row.names=FALSE, append = TRUE)
+
+write.xlsx(as.data.frame(amends_by_faction_perc), 
+           file=paste0("amends_",date_amends, ".xlsx"),
+           sheetName="amends_by_faction_perc", row.names=FALSE, append = TRUE)
+
+write.xlsx(as.data.frame(anomalities), 
+           file=paste0("amends_", date_amends, ".xlsx"),
+           sheetName="anomalities", row.names=FALSE, append = TRUE)
+
+write.xlsx(as.data.frame(best_mps), 
+           file=paste0("amends_", date_amends, ".xlsx"),
+           sheetName="best_mps", row.names=FALSE, append = TRUE)
+
+write.xlsx(as.data.frame(worse_mps), 
+           file=paste0("amends_",  date_amends, ".xlsx"),
+           sheetName="worse_mps", row.names=FALSE,
+           append = TRUE)
+
+write.xlsx(as.data.frame(AMENDS_f), 
+           file=paste0("amends_",date_amends, ".xlsx"),
+           sheetName="AMENDS_f", row.names=FALSE, append = TRUE)
+
+write.xlsx(as.data.frame(amends_by_number), 
+           file=paste0("amends_",date_amends, ".xlsx"),
+           sheetName="amends_by_number", row.names=FALSE, append = TRUE)
+
+write.xlsx(as.data.frame(amends_by_number_perc), 
+           file=paste0("amends_", date_amends, ".xlsx"),
+           sheetName="amends_by_number_perc", row.names=FALSE,append = TRUE)
+
+write.xlsx(as.data.frame(amends_sub_perc), 
+           file=paste0("amends_add", date_amends, ".xlsx"),
+           sheetName="amends_sub_perc", row.names=FALSE, append = TRUE)
+
