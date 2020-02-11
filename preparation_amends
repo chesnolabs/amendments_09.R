@@ -27,7 +27,7 @@ bills_main_skl9 <- read.csv("https://data.rada.gov.ua/ogd/zpr/skl9/bills_main-sk
   mutate(number=as.character(number))
 
 #### Read a file with a downloaded data  #### amends_read
-amends_read <- read_delim("Amends_scraping_28_01_2020.csv", ";", 
+amends_read <- read_delim("Amends_scraping_28_01_2020.csv", ";", # Check your name
                                 escape_double = FALSE, col_names = FALSE, 
                                 col_types = cols(X1 = col_character()), 
                                 trim_ws = TRUE)
@@ -66,11 +66,16 @@ amends_full <- amends_f %>%
 amends_full_description <- amends_full%>%
   left_join(bills_executives_skl9, by=c("bill_id"="bill_id"))
   
-
 ###  Write files ####
 library(xlsx)
 library(rJava)
 
+date_amends <- "28_01_2019" # Change 
+
+write.xlsx(as.data.frame(amends_full), 
+           file=paste0("amends_full", date_amends, ".xlsx"), # Fix names
+           sheetName="amends_full", row.names=FALSE, append = FALSE)
+
 write.xlsx(as.data.frame(amends_full_description), 
-           file=paste0("amends_full_description_28_01_2020", ".xlsx"), # Fix names
-           sheetName="amends_full_description", row.names=FALSE)
+           file=paste0("amends_full", date_amends, ".xlsx"), # Fix names
+           sheetName="amends_full_description", row.names=FALSE, append = TRUE)
