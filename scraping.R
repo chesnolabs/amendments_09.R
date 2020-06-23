@@ -12,16 +12,42 @@ library(extrafontdb)
 library(ggplot2)
 
 
-### Start parsing ####
-
 # Step 1. MPs' list to use for a loop
 mps09 <- read.csv("https://data.rada.gov.ua/ogd/mps/skl9/mps09-data.csv", fileEncoding = "UTF-8")%>%
   #select(rada_id, full_name, date_end)%>%
   filter(date_end=="")%>%
   select(id, full_name, region_name)
 
+
+# Download the bills  ####
+
+# Download the current acts - the signed and active bills who 
+bills_acts_skl9 <- read.csv("https://data.rada.gov.ua/ogd/zpr/skl9/bills_acts-skl9.csv")
+
+# The executives of Rada 9
+bills_executives_skl9 <- read.csv("https://data.rada.gov.ua/ogd/zpr/skl9/bills_executives-skl9.csv", 
+                                  fileEncoding = "UTF-8")%>%
+  filter(type=="mainExecutive")%>% # We need the main 
+  select(-convocation, -person_id, -organization, -post)%>%
+  mutate(bill_id=as.character(bill_id))
+
+# The main file with bills' activities
+bills_main_skl9 <- read.csv("https://data.rada.gov.ua/ogd/zpr/skl9/bills_main-skl9.csv", fileEncoding = "UTF-8")%>%
+  #select(bill_id, number,type, rubric, subject,currentPhase_title)%>%
+  mutate(number=as.character(number))
+
+
 # Step 2. Actually turn a dataframe into a list
+# MPs' list to use for a loop
+
+mps09 <- read.csv("https://data.rada.gov.ua/ogd/mps/skl9/mps09-data.csv", fileEncoding = "UTF-8")%>%
+  #select(rada_id, full_name, date_end)%>%
+  filter(date_end=="")%>%
+  select(id, full_name, region_name)
+
 mps09$id <- as.list(mps09$id)
+
+# Start parsing ####
 
 # Step 3. A function to download 
 get_amends <- function(){
