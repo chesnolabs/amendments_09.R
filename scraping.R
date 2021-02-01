@@ -74,7 +74,7 @@ get_amends <- function(){
 
             # Write data 
             write.table(results_2019, fileEncoding = "UTF-8", 
-                                                  paste0("Amends_scraping",  "_28_01_2020",   #Change date
+                                                  paste0("Amends_scraping",  Sys.Date(),   #Change date
                                                          ".csv"), 
                                                   append = TRUE, col.names = FALSE, 
                                                   row.names = FALSE, sep = ";")  
