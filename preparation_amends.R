@@ -1,11 +1,11 @@
 
-#### Download the list of MPs' ####
+# Download the list of MPs' ####
     
 mps09 <- read.csv("https://data.rada.gov.ua/ogd/mps/skl9/mps09-data.csv", fileEncoding = "UTF-8")%>%
   filter(date_end=="")%>% # Filter to none to get rid of MPs' who resigned
   select(id, full_name, region_name)  
 
-#### Download the factions of MPs' ####
+# Download the factions of MPs' ####
 
 get_factions_open <- function(){
   posts <- read_csv("https://data.rada.gov.ua/ogd/mps/skl9/mp-posts_ids.csv")
@@ -40,16 +40,17 @@ get_factions_open <- function(){
 
 factions_09 <- get_factions_open()
 
-factions <- factions_09%>%select(-rada_id, -id)
+factions <- factions_09 %>%
+    select(-rada_id, -id)
 
 
 
-#### Download the bills  ####
+# Download the bills  ####
 
-# Download the current acts - the signed and active bills who 
+# Download signed acts 
 bills_acts_skl9 <- read.csv("https://data.rada.gov.ua/ogd/zpr/skl9/bills_acts-skl9.csv")
 
-# The executives of Rada 9
+# The executives of Rada-9
 bills_executives_skl9 <- read.csv("https://data.rada.gov.ua/ogd/zpr/skl9/bills_executives-skl9.csv", 
                                   fileEncoding = "UTF-8")%>%
   filter(type=="mainExecutive")%>% # We need the main 
@@ -61,7 +62,7 @@ bills_main_skl9 <- read.csv("https://data.rada.gov.ua/ogd/zpr/skl9/bills_main-sk
   #select(bill_id, number,type, rubric, subject,currentPhase_title)%>%
   mutate(number=as.character(number))
 
-#### Read a file with a downloaded data  #### amends_read
+# Read a file with a downloaded data  #### amends_read
 amends_read <- read_delim("Amends_scraping_28_01_2020.csv", ";", # Check your name
                                 escape_double = FALSE, col_names = FALSE, 
                                 col_types = cols(X1 = col_character()), 
@@ -101,7 +102,7 @@ amends_full <- amends_f %>%
 amends_full_description <- amends_full%>%
   left_join(bills_executives_skl9, by=c("bill_id"="bill_id"))
   
-###  Write files ####
+# Write files ####
 library(xlsx)
 library(rJava)
 
